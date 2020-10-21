@@ -1,6 +1,4 @@
-### Burger Proyect
-
-=================
+### Burger Project
 
 To update packages:
 `yarn`
