@@ -36,6 +36,7 @@ class BurgerBuilder extends Component {
       .get("https://react-19dcc.firebaseio.com/ingredients.json")
       .then((response) => {
         this.setState({ ingredients: response.data });
+        this.setState({ loading: false });
       })
       .catch((error) => {
         this.setState({ error: true });
