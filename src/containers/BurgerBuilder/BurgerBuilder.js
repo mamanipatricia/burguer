@@ -32,6 +32,7 @@ class BurgerBuilder extends Component {
   };
 
   componentDidMount() {
+    console.log('this.props:::: ', this.props)
     axios
       .get("https://react-19dcc.firebaseio.com/ingredients.json")
       .then((response) => {
@@ -93,32 +94,34 @@ class BurgerBuilder extends Component {
   };
 
   purchaseContinueHandler = () => {
-    // alert("You continue!");
-    this.setState({ loading: true });
-    const order = {
-      ingredients: this.state.ingredients,
-      price: this.state.totalPrice,
-      customer: {
-        name: "Max Schwarxmuller",
-        address: {
-          street: "Teststreet 1",
-          zipCode: "123451",
-          country: "Germany",
-        },
-        email: "test@test.com",
-      },
-      deliveryMethod: "fastest",
-    };
-    axios
-      .post("/orders.json", order)
-      .then((response) => {
-        this.setState({ loading: false, purchasing: false });
-        // console.log("response:: ", response)
-      })
-      .catch((error) => {
-        this.setState({ loading: true, purchasing: false });
-        // console.log("error:: ", error)
-      });
+
+    // // alert("You continue!");
+    // this.setState({ loading: true });
+    // const order = {
+    //   ingredients: this.state.ingredients,
+    //   price: this.state.totalPrice,
+    //   customer: {
+    //     name: "Max Schwarxmuller",
+    //     address: {
+    //       street: "Teststreet 1",
+    //       zipCode: "123451",
+    //       country: "Germany",
+    //     },
+    //     email: "test@test.com",
+    //   },
+    //   deliveryMethod: "fastest",
+    // };
+    // axios
+    //   .post("/orders.json", order)
+    //   .then((response) => {
+    //     this.setState({ loading: false, purchasing: false });
+    //     // console.log("response:: ", response)
+    //   })
+    //   .catch((error) => {
+    //     this.setState({ loading: true, purchasing: false });
+    //     // console.log("error:: ", error)
+    //   });
+    this.props.history.push("/checkout")
   };
 
   render() {
