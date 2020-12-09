@@ -1,15 +1,13 @@
 import React, { Component } from "react";
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 
 import CheckoutSummary from "../../components/Order/CheckoutSummary/CheckoutSummary";
 import ContactData from "../ContacData/ContactData";
 // goal:  Rebuild the burger in this checkout summary and then when the user clicks on continue, i then want to load the contact form, so step-by-step. The goal therefore is to create a checkout summary form which allows me to display a review of the burger and show the continue or cancel buttons. For that, i'll go into my components folder and add a bew folder.
+import * as actions from "../../store/actions/index";
+
 class Checkout extends Component {
-  state = {
-    ingredients: null,
-    price: 0,
-  };
 
   // componentWillMount() {
   //   const query = new URLSearchParams(this.props.location.search);
@@ -26,7 +24,7 @@ class Checkout extends Component {
   //   this.setState({ ingredients: ingredients, totalPrice: price });
   // }
 
-  checkoutCanceledHandler = () => {
+  checkoutCancelledHandler = () => {
     this.props.history.goBack();
   };
 
@@ -35,25 +33,35 @@ class Checkout extends Component {
   };
 
   render() {
-    return (
-      <div>
-        <CheckoutSummary
-          ingredients={this.props.ings}
-          checkoutCanceled={this.checkoutCanceledHandler}
-          checkoutContinued={this.checkoutContinuedHandler}
-        />
-        <Route
-          path={this.props.match.path + "/contact-data"}
-          component={ContactData}
-        />
-      </div>
-    );
+    let summary = <Redirect to="/" />;
+    if (this.props.ings) {
+      const purchasedRedirect = this.props.purchased ? (
+        <Redirect to="/" />
+      ) : null;
+      summary = (
+        <div>
+          {purchasedRedirect}
+          <CheckoutSummary
+            ingredients={this.props.ings}
+            checkoutCanceled={this.checkoutCancelledHandler}
+            checkoutContinued={this.checkoutContinuedHandler}
+          />
+          <Route
+            path={this.props.match.path + "/contact-data"}
+            component={ContactData}
+          />
+        </div>
+      );
+    }
+    // return <div>{summary}</div>;
+    return summary;
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    ings: state.ingredients,
+    ings: state.burgerBuilder.ingredients,
+    purchased: state.order.purchased,
   };
 };
 
